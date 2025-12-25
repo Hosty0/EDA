@@ -1,0 +1,24 @@
+version: "3.9"
+
+services:
+  train:
+    build: ./train
+    volumes:
+      - ./artifacts:/artifacts
+    restart: "no"
+
+  dashboard:
+    build: ./dashboard
+    volumes:
+      - ./artifacts:/artifacts
+    expose:
+      - "8050"
+    depends_on:
+      - train
+
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - dashboard
